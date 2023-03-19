@@ -1,0 +1,223 @@
+{
+  "openapi" : "3.0.1",
+  "info" : {
+    "contact" : {
+      "email" : "tomerk@kkl.org.il",
+      "name" : "Tomer Kedem - KKL API"
+    },
+    "description" : "API providing data for expeneses new project|",
+    "title" : "Expeneses API",
+    "version" : "1.0.0"
+  },
+  "servers" : [ {
+    "description" : "Api for amital-client-application (dev branch) on Dev-in",
+    "url" : "https://localhost:7275/"
+  } ],
+  "tags" : [ {
+    "description" : "Get access to Users",
+    "name" : "users"
+  }, {
+    "description" : "Get access to todo",
+    "name" : "todo"
+  } ],
+  "paths" : {
+    "/users" : {
+      "get" : {
+        "operationId" : "GetAllUsers",
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "items" : {
+                    "$ref" : "#/components/schemas/Users"
+                  },
+                  "type" : "array"
+                }
+              }
+            },
+            "description" : "OK"
+          },
+          "400" : {
+            "description" : "If any data is incorrect"
+          },
+          "500" : {
+            "description" : "If any server Error"
+          }
+        },
+        "summary" : "Get list of users",
+        "tags" : [ "users" ]
+      }
+    },
+    "/task/GetSumOfTask/{userId}" : {
+      "get" : {
+        "operationId" : "GetSumOfTaskByUserId",
+        "parameters" : [ {
+          "description" : "a user id",
+          "explode" : false,
+          "in" : "path",
+          "name" : "userId",
+          "required" : true,
+          "schema" : {
+            "description" : "uniq id of the user",
+            "example" : 351,
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "style" : "simple"
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "description" : "sum of todo per user",
+                  "example" : 351,
+                  "format" : "int32",
+                  "type" : "integer"
+                }
+              }
+            },
+            "description" : "OK"
+          },
+          "400" : {
+            "description" : "If any data is incorrect"
+          },
+          "500" : {
+            "description" : "If any server Error"
+          }
+        },
+        "summary" : "get all task by userId",
+        "tags" : [ "todo" ]
+      }
+    },
+    "/task" : {
+      "get" : {
+        "description" : "get the list of all task on the system",
+        "operationId" : "GetTaskList",
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "items" : {
+                    "$ref" : "#/components/schemas/ItemTodo"
+                  },
+                  "type" : "array"
+                }
+              }
+            },
+            "description" : "successful operation"
+          },
+          "400" : {
+            "description" : "If any data is incorrect"
+          },
+          "500" : {
+            "description" : "If any server Error"
+          }
+        },
+        "summary" : "Get list of task",
+        "tags" : [ "todo" ]
+      },
+      "post" : {
+        "operationId" : "AddTask",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/ItemTodo"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "items" : {
+                    "$ref" : "#/components/schemas/ItemTodo"
+                  },
+                  "type" : "array"
+                }
+              }
+            },
+            "description" : "successful operation"
+          },
+          "400" : {
+            "description" : "If any data is incorrect"
+          },
+          "500" : {
+            "description" : "If any server Error"
+          }
+        },
+        "summary" : "Add task",
+        "tags" : [ "todo" ]
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "Users" : {
+        "description" : "the otp responses",
+        "example" : {
+          "fullName" : "משה בן זכאי",
+          "id" : 127
+        },
+        "properties" : {
+          "id" : {
+            "description" : "unique id of the user",
+            "example" : 127,
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "fullName" : {
+            "example" : "משה בן זכאי",
+            "type" : "string"
+          }
+        },
+        "type" : "object"
+      },
+      "ItemTodo" : {
+        "additionalProperties" : false,
+        "description" : "task",
+        "example" : {
+          "description" : "רכישת מחשב נייד",
+          "fullName" : "משה בן זכאי",
+          "id" : 127,
+          "done" : true,
+          "userId" : 127
+        },
+        "properties" : {
+          "id" : {
+            "description" : "unique id of the task",
+            "example" : 127,
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "description" : {
+            "description" : "task description",
+            "example" : "רכישת מחשב נייד",
+            "nullable" : true,
+            "type" : "string"
+          },
+          "done" : {
+            "example" : true,
+            "type" : "boolean"
+          },
+          "userId" : {
+            "description" : "unique id of the user",
+            "example" : 127,
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "fullName" : {
+            "example" : "משה בן זכאי",
+            "type" : "string"
+          }
+        },
+        "type" : "object"
+      }
+    }
+  }
+}
